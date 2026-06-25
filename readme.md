@@ -1,7 +1,8 @@
+## Important Cmd 
 java -version
 echo %JAVA_HOME%
 mvn -version
-
+mvn spring-boot:run
 
 
 
