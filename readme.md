@@ -24,3 +24,5 @@ https://start.spring.io/?utm_source=chatgpt.com
 ### Java : 21
 
 ### Click on btn : GENERATE
+
+for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\target\\ \\.mvn\\ \\public\\ \\venv\\  \\__pycache__\\    \\.git\\ \\alembic\\  \\.next\\ \\.gitignore README.md CLAUDE.md AGENTS.md package-lock.json mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
