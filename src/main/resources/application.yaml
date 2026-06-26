@@ -11,15 +11,18 @@ spring:
     password: ${DATABASE_PASSWORD}
 
   flyway:
+    enabled: true
     baseline-on-migrate: true
 
   jpa:
     hibernate:
       ddl-auto: update
-
     show-sql: true
 
     properties:
       hibernate:
         format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+file:
+  upload-dir: uploads
