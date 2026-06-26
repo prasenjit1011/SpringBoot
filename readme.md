@@ -2,9 +2,15 @@
 java -version
 echo %JAVA_HOME%
 mvn -version
+
+mvn clean install
 mvn spring-boot:run
 
-
+# Collect DB Credentials From (GitHub Login / prasenjit.aluni@gmail.com): 
+### https://console.neon.tech/app/projects/bold-lab-35054172?database=nestcrud
+DATABASE_URL=jdbc:postgresql://ep-withered-frost-a5etb539-pooler.us-east-2.aws.neon.tech/nestcrud?sslmode=require
+DATABASE_USERNAME=neondb_owner
+DATABASE_PASSWORD=
 
 # Download Basic Project Setup From
 
