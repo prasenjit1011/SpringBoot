@@ -2,12 +2,15 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Product;
 import com.example.demo.service.ProductService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@Tag(name = "Products", description = "Products Management APIs")
 public class ProductController {
 
     private final ProductService productService;
@@ -17,6 +20,7 @@ public class ProductController {
     }
 
     // create product for a user
+    @Operation(summary = "Create a new product")
     @PostMapping("/user/{userId}")
     public Product create(@PathVariable Long userId,
                           @RequestBody Product product) {
@@ -24,16 +28,19 @@ public class ProductController {
         return productService.create(userId, product);
     }
 
+    @Operation(summary = "Get all products")
     @GetMapping
     public List<Product> all() {
         return productService.findAll();
     }
 
+    @Operation(summary = "Get all user's products")
     @GetMapping("/user/{userId}")
     public List<Product> byUser(@PathVariable Long userId) {
         return productService.findByUser(userId);
     }
 
+    @Operation(summary = "Update products")
     @PutMapping("/{id}")
     public Product update(@PathVariable Long id,
                           @RequestBody Product product) {
@@ -41,6 +48,7 @@ public class ProductController {
         return productService.update(id, product);
     }
 
+    @Operation(summary = "Delete products")
     @DeleteMapping("/{id}")
     public String delete(@PathVariable Long id) {
         productService.delete(id);
