@@ -31,6 +31,6 @@ https://start.spring.io/?utm_source=chatgpt.com
 
 ### Click on btn : GENERATE
 
-GCP
+### GCP
 
-for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\.mvn\\ \\api\\ \\target\\ \\public\\  \\.git\\ \\.gitignore README.md mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
+### for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\.mvn\\ \\api\\ \\target\\ \\public\\ \\uploads\\  \\.git\\ \\.gitignore README.md mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
