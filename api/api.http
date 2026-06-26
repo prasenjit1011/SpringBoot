@@ -17,24 +17,32 @@ Content-Type: application/json
   "email": "john@example.com"
 }
 
-###
-
-### Create User - Alice
-POST http://localhost:8080/users
+### Create Product for User
+POST http://localhost:8080/products/user/1
 Content-Type: application/json
 
 {
-  "name": "Alice Smith",
-  "email": "alice@example.com"
+    "name": "Mobile",
+    "price": 25000
 }
 
-###
+### Get All Products
+GET http://localhost:8080/products
 
-### Create User - Bob
-POST http://localhost:8080/users
+
+### Update Product
+PUT http://localhost:8080/products/1
 Content-Type: application/json
 
 {
-  "name": "Bob Johnson",
-  "email": "bob@example.com"
+    "name": "Gaming Laptop",
+    "price": 95000
 }
+
+### Delete Product
+DELETE http://localhost:8080/products/1
+
+
+
+
+

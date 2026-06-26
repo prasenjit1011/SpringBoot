@@ -31,4 +31,4 @@ https://start.spring.io/?utm_source=chatgpt.com
 
 ### Click on btn : GENERATE
 
-for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\target\\ \\.mvn\\ \\public\\ \\venv\\  \\__pycache__\\    \\.git\\ \\alembic\\  \\.next\\ \\.gitignore README.md CLAUDE.md AGENTS.md package-lock.json mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
+for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\.mvn\\ \\api\\ \\target\\ \\public\\  \\.git\\ \\.gitignore README.md mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
