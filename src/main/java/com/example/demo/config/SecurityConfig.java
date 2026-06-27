@@ -26,6 +26,7 @@ public class SecurityConfig {
                         // Allow access to custom login page
                         .requestMatchers(
                             "/login",
+                            "/api/auth/**",
                             "/users/**",
                             "/products/**"                            
                         ).permitAll()

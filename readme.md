@@ -4,7 +4,7 @@ echo %JAVA_HOME%
 mvn -version
 
 mvn clean install
-mvn spring-boot:run
+mvn clean spring-boot:run
 
 # Collect DB Credentials From (GitHub Login / prasenjit.aluni@gmail.com): 
 ### https://console.neon.tech/app/projects/bold-lab-35054172?database=nestcrud
@@ -35,4 +35,8 @@ https://start.spring.io/?utm_source=chatgpt.com
 
 ### for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\.mvn\\ \\api\\ \\target\\ \\public\\ \\uploads\\  \\.git\\ \\.gitignore README.md mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
 
+### for /f "delims=" %f in ('dir /s /b AuthController.java AuthService.java LoginRequest.java LoginResponse.java pom.xml') do @echo ===== %f ===== >> "../all_code.txt" & type "%f" >> "../all_code.txt" & echo. >> "../all_code.txt"
+
 ### treee -I ".mvn|target|uploads|"
+
+
