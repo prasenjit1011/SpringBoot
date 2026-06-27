@@ -20,7 +20,8 @@ echo %JAVA_HOME%
 mvn -version
 ```
 
----
+mvn clean install
+mvn clean spring-boot:run
 
 ## Project Setup
 
@@ -90,108 +91,8 @@ spring:
         format_sql: true
 ```
 
----
+### for /f "delims=" %f in ('dir /s /b AuthController.java AuthService.java LoginRequest.java LoginResponse.java pom.xml') do @echo ===== %f ===== >> "../all_code.txt" & type "%f" >> "../all_code.txt" & echo. >> "../all_code.txt"
 
-## Importand Cmd Build Project
+### treee -I ".mvn|target|uploads|"
 
-Clean and build the application:
 
-```bash
-mvn clean install
-```
-
----
-
-## Run Application
-
-Start the Spring Boot application:
-
-```bash
-mvn spring-boot:run
-```
-
-Application will start on:
-
-```text
-http://localhost:8080
-```
-
----
-
-## Project Structure
-
-```text
-Folder PATH listing
-C:.
-├───.github
-│   └───workflows
-├───api
-├───src
-│   ├───main
-│   │   ├───java
-│   │   │   └───com
-│   │   │       └───example
-│   │   │           └───demo
-│   │   │               ├───config
-│   │   │               ├───controller
-│   │   │               ├───entity
-│   │   │               ├───repository
-│   │   │               └───service
-│   │   └───resources
-│   │       ├───db
-│   │       │   └───migration
-│   │       ├───static
-│   │       └───templates
-│   └───test
-│       └───java
-│           └───com
-│               └───example
-│                   └───demo
-├───terraform
-└───uploads
-
-```
-
----
-
-## Cloud Deployment
-
-This application can be deployed on:
-
-* Google Cloud Platform (GCP)
-* AWS
-* Azure
-* Docker Containers
-
----
-
-## Useful Command
-
-Export all source code into a single text file:
-
-```cmd
-for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\.mvn\\ \\api\\ \\target\\ \\public\\ \\uploads\\ \\.git\\ \\.gitignore README.md mvnw mvnw.cmd .env"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
-```
-
----
-
-## Technologies Used
-
-* Java 21
-* Spring Boot 3.5.x
-* Spring Web
-* Spring Data JPA
-* Spring Security
-* JWT Authentication
-* PostgreSQL
-* Maven
-* Lombok
-* Thymeleaf (Optional)
-
----
-
-## Author
-
-**Prasenjit**
-
-GitHub: https://github.com/<your-github-username>

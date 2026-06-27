@@ -23,6 +23,7 @@ public class OpenApiConfig {
                         .version("1.0.0")
                         .description("""
                                 REST APIs for managing:
+                                - Auth
                                 - Users
                                 - Products
                                 - Product Images

@@ -16,7 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/product-images")
+@RequestMapping("/api/product-images")
 @Tag(name = "Product Images")
 public class ProductImageController {
 
