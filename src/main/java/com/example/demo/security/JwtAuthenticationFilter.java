@@ -25,17 +25,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+
+        String path = request.getServletPath();
+
+        return path.startsWith("/login")
+                || path.startsWith("/swagger-ui/")
+                || path.startsWith("/v3/api-docs/")
+                || path.startsWith("/api/auth/")
+                || path.startsWith("/api/users/");
+    }
+
+    @Override
     protected void doFilterInternal(
             HttpServletRequest request,
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        // Always clear previous authentication
-        SecurityContextHolder.clearContext();
-
         String authHeader = request.getHeader("Authorization");
 
+        // No JWT → continue normally
+        // (important for Swagger session login)
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -45,9 +56,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
             String token = authHeader.substring(7);
 
-            if (jwtService.isTokenValid(token)
-                    && SecurityContextHolder.getContext()
-                            .getAuthentication() == null) {
+            if (!jwtService.isTokenValid(token)) {
+
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.setContentType("application/json");
+
+                response.getWriter().write("""
+                        {
+                          "status": false,
+                          "message": "Invalid token"
+                        }
+                        """);
+
+                return;
+            }
+
+            if (SecurityContextHolder.getContext()
+                    .getAuthentication() == null) {
 
                 String email = jwtService.extractUsername(token);
 
@@ -69,8 +94,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } catch (Exception ex) {
 
-            // Invalid/expired token → ensure user is unauthenticated
-            SecurityContextHolder.clearContext();
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setContentType("application/json");
+
+            response.getWriter().write("""
+                    {
+                      "status": false,
+                      "message": "Invalid token"
+                    }
+                    """);
+
+            return;
         }
 
         filterChain.doFilter(request, response);

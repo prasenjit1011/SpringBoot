@@ -21,92 +21,100 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-        private final JwtAuthenticationFilter jwtAuthenticationFilter;
-        private final JwtAuthenticationEntryPoint authenticationEntryPoint;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-        public SecurityConfig(
-                JwtAuthenticationFilter jwtAuthenticationFilter,
-                JwtAuthenticationEntryPoint authenticationEntryPoint) {
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            JwtAuthenticationEntryPoint authenticationEntryPoint) {
 
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationEntryPoint = authenticationEntryPoint;
-        }
+    }
 
 
-        @Bean
-        public SecurityFilterChain securityFilterChain(HttpSecurity http)
-                throws Exception {
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
 
-                http
-                        .csrf(csrf -> csrf.disable())
+        http
+                .csrf(csrf -> csrf.disable())
 
-                        .exceptionHandling(exception -> exception
-                                .authenticationEntryPoint(authenticationEntryPoint)
-                        )
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                )
 
-                        .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
 
-                                // Public endpoints
-                                .requestMatchers(
-                                        "/login",
-                                        "/api/auth/**",
-                                        "/users/**"
-                                ).permitAll()
+                        // Public
+                        .requestMatchers(
+                                "/login",
+                                "/api/auth/**",
+                                "/api/users/**"
+                        ).permitAll()
 
-                                // Swagger - require login
-                                .requestMatchers(
-                                        "/swagger-ui/**",
-                                        "/v3/api-docs/**",
-                                        "/swagger-ui.html"
-                                ).authenticated()
+                        // Swagger requires login
+                        .requestMatchers(
+                                "/swagger-ui/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui.html"
+                        ).hasRole("ADMIN")
 
-                                // Product APIs
-                                .requestMatchers(HttpMethod.GET,
-                                        "/api/products",
-                                        "/api/products/user/*")
-                                .permitAll()
+                        // Product APIs
+                        .requestMatchers(HttpMethod.GET,
+                                "/api/products",
+                                "/api/products/user/*")
+                        .permitAll()
 
-                                .requestMatchers(HttpMethod.POST,
-                                        "/api/products/user/*")
-                                .authenticated()
+                        .requestMatchers(HttpMethod.POST,
+                                "/api/products/user/*")
+                        .authenticated()
 
-                                .requestMatchers(HttpMethod.PUT,
-                                        "/api/products/*")
-                                .authenticated()
+                        .requestMatchers(HttpMethod.PUT,
+                                "/api/products/*")
+                        .authenticated()
 
-                                .requestMatchers(HttpMethod.DELETE,
-                                        "/api/products/*")
-                                .authenticated()
+                        .requestMatchers(HttpMethod.DELETE,
+                                "/api/products/*")
+                        .authenticated()
 
-                                .anyRequest().authenticated()
-                        )
+                        
+                        .anyRequest().authenticated()
+                )
 
-                        // Use stateless sessions for JWT APIs
-                        .sessionManagement(session -> session
-                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                        )
+                // Required for form login
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(
+                                SessionCreationPolicy.IF_REQUIRED)
+                )
 
-                        // Swagger UI login
-                        .formLogin(form -> form
-                                .loginPage("/login")
-                                .defaultSuccessUrl("/swagger-ui/index.html", true)
-                                .permitAll()
-                        )
+                .formLogin(form -> form
+                        .loginPage("/login")
+                        .defaultSuccessUrl("/swagger-ui/index.html", true)
+                        .permitAll()
+                )
 
-                        // Optional Basic Auth
-                        .httpBasic(Customizer.withDefaults())
 
-                        // Add JWT filter
-                        .addFilterBefore(
-                                jwtAuthenticationFilter,
-                                UsernamePasswordAuthenticationFilter.class
-                        );
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login")
+                        .invalidateHttpSession(true)
+                        .clearAuthentication(true)
+                        .deleteCookies("JSESSIONID")
+                        .permitAll()
+                )
+                .httpBasic(Customizer.withDefaults())
 
-                return http.build();
-        }
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                );
+
+        return http.build();
+    }
 
     /**
-     * Swagger login credentials:
+     * Swagger Login Credentials
      * Username: admin
      * Password: admin123
      */

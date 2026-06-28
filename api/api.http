@@ -3,7 +3,7 @@
 ### ============================================
 
 @host = http://localhost:8080
-@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwa3N0cmluZyIsImlhdCI6MTc4MjYxMTY2OCwiZXhwIjoxNzgyNjE1MjY4fQ.V8gz5lr5xVIuzhG0n-kzHb8FlkHFeEWpk38URmld3WU
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwa3N0cmluZyIsImlhdCI6MTc4MjYxMzk1NiwiZXhwIjoxNzgyNjE3NTU2fQ.2_arxW_aRJbSQJnUr5PJPmdb9Vng9hY9lKvNc_Cz7Dw
 ### ============================================
 ### Health Check
 ### ============================================
@@ -19,10 +19,11 @@ Accept: application/json
 
 POST {{host}}/api/users
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
     "name": "John Doe",
-    "email": "john@example.com",
+    "email": "jxohn@example.com",
     "password": "password123"
 }
 
