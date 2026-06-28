@@ -1,9 +1,14 @@
 package com.example.demo.config;
 
+import com.example.demo.security.JwtAuthenticationEntryPoint;
+import com.example.demo.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,43 +16,100 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
+        private final JwtAuthenticationEntryPoint authenticationEntryPoint;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+        public SecurityConfig(
+                JwtAuthenticationFilter jwtAuthenticationFilter,
+                JwtAuthenticationEntryPoint authenticationEntryPoint) {
 
-        http
-                .csrf(csrf -> csrf.disable())
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+        this.authenticationEntryPoint = authenticationEntryPoint;
+        }
 
-                .authorizeHttpRequests(auth -> auth
-                        // Allow access to custom login page
-                        .requestMatchers(
-                            "/login",
-                            "/api/auth/**",
-                            "/users/**",
-                            "/products/**"                            
-                        ).permitAll()
 
-                        // All other endpoints require login
-                        .anyRequest().authenticated()
-                )
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http)
+                throws Exception {
 
-                // Use custom login page
-                .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/swagger-ui/index.html", true)
-                        .permitAll()
-                )
+                http
+                        .csrf(csrf -> csrf.disable())
 
-                // Enable HTTP Basic authentication
-                .httpBasic(Customizer.withDefaults());
+                        .exceptionHandling(exception -> exception
+                                .authenticationEntryPoint(authenticationEntryPoint)
+                        )
 
-        return http.build();
-    }
+                        .authorizeHttpRequests(auth -> auth
 
+                                // Public endpoints
+                                .requestMatchers(
+                                        "/login",
+                                        "/api/auth/**",
+                                        "/users/**"
+                                ).permitAll()
+
+                                // Swagger - require login
+                                .requestMatchers(
+                                        "/swagger-ui/**",
+                                        "/v3/api-docs/**",
+                                        "/swagger-ui.html"
+                                ).authenticated()
+
+                                // Product APIs
+                                .requestMatchers(HttpMethod.GET,
+                                        "/api/products",
+                                        "/api/products/user/*")
+                                .permitAll()
+
+                                .requestMatchers(HttpMethod.POST,
+                                        "/api/products/user/*")
+                                .authenticated()
+
+                                .requestMatchers(HttpMethod.PUT,
+                                        "/api/products/*")
+                                .authenticated()
+
+                                .requestMatchers(HttpMethod.DELETE,
+                                        "/api/products/*")
+                                .authenticated()
+
+                                .anyRequest().authenticated()
+                        )
+
+                        // Use stateless sessions for JWT APIs
+                        .sessionManagement(session -> session
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                        )
+
+                        // Swagger UI login
+                        .formLogin(form -> form
+                                .loginPage("/login")
+                                .defaultSuccessUrl("/swagger-ui/index.html", true)
+                                .permitAll()
+                        )
+
+                        // Optional Basic Auth
+                        .httpBasic(Customizer.withDefaults())
+
+                        // Add JWT filter
+                        .addFilterBefore(
+                                jwtAuthenticationFilter,
+                                UsernamePasswordAuthenticationFilter.class
+                        );
+
+                return http.build();
+        }
+
+    /**
+     * Swagger login credentials:
+     * Username: admin
+     * Password: admin123
+     */
     @Bean
     public UserDetailsService userDetailsService(
             PasswordEncoder passwordEncoder) {

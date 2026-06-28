@@ -1,48 +1,151 @@
-### Home API
-GET http://localhost:8080/
+### ============================================
+### Base URL
+### ============================================
+
+@host = http://localhost:8080
+@token = eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwa3N0cmluZyIsImlhdCI6MTc4MjYxMTY2OCwiZXhwIjoxNzgyNjE1MjY4fQ.V8gz5lr5xVIuzhG0n-kzHb8FlkHFeEWpk38URmld3WU
+### ============================================
+### Health Check
+### ============================================
+
+GET {{host}}/
+Accept: application/json
 
 ###
 
-### Get all users
-GET http://localhost:8080/users
+### ============================================
+### Create User
+### ============================================
+
+POST {{host}}/api/users
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "email": "john@example.com",
+    "password": "password123"
+}
 
 ###
 
-### Create User - John
-POST http://localhost:8080/users
+### ============================================
+### Get All Users
+### ============================================
+
+GET {{host}}/api/users
+Accept: application/json
+
+###
+
+### ============================================
+### Login
+### ============================================
+
+POST {{host}}/api/auth/login
 Content-Type: application/json
 
 {
-  "name": "Johnty Doe",
-  "email": "john@example.com"
+    "email": "pkstring",
+    "password": "pppppstring"
 }
 
-### Create Product for User
-POST http://localhost:8080/products/user/1
+###
+
+### ============================================
+### Create Product (Requires Authentication)
+### ============================================
+
+POST {{host}}/api/products/user/1
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-    "name": "Mobile",
-    "price": 25000
+    "name": "iPhe 16",
+    "price": 999
 }
 
+###
+
+### ============================================
 ### Get All Products
-GET http://localhost:8080/products
+### ============================================
 
+GET {{host}}/api/products
+Accept: application/json
 
-### Update Product
-PUT http://localhost:8080/products/1
+###
+
+### ============================================
+### Get Products By User
+### ============================================
+
+GET {{host}}/api/products/user/1
+Accept: application/json
+
+###
+
+### ============================================
+### Update Product (Requires Authentication)
+### ============================================
+
+PUT {{host}}/api/products/1
 Content-Type: application/json
+Authorization: Bearer YOUR_JWT_TOKEN
 
 {
-    "name": "Gaming Laptop",
-    "price": 95000
+    "name": "iPhone 16 Pro",
+    "price": 129999
 }
 
-### Delete Product
-DELETE http://localhost:8080/products/1
+###
 
+### ============================================
+### Delete Product (Requires Authentication)
+### ============================================
 
+DELETE {{host}}/api/products/1
+Authorization: Bearer YOUR_JWT_TOKEN
 
+###
 
+### ============================================
+### Upload Product Image
+### ============================================
 
+POST {{host}}/api/product-images/product/1
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="sample.jpg"
+Content-Type: image/jpeg
+
+< ./sample.jpg
+--WebAppBoundary--
+
+###
+
+### ============================================
+### Get Product Images
+### ============================================
+
+GET {{host}}/api/product-images/product/1
+Accept: application/json
+
+###
+
+### ============================================
+### Delete Product Image
+### ============================================
+
+DELETE {{host}}/api/product-images/1
+
+###
+
+### ============================================
+### Truncate Database
+### ============================================
+
+DELETE {{host}}/api/admin/truncate
+Authorization: Bearer YOUR_JWT_TOKEN
+
+###

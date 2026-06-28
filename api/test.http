@@ -1,0 +1,13 @@
+@host = http://localhost:8080
+@token = YOUR_JWT_TOKEN
+
+###
+
+POST {{host}}/api/products/user/1
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+    "name": "Laptop",
+    "price": 55000
+}

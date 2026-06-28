@@ -33,7 +33,13 @@ https://start.spring.io/?utm_source=chatgpt.com
 
 ### GCP
 
-### for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\.mvn\\ \\api\\ \\target\\ \\public\\ \\uploads\\  \\.git\\ \\.gitignore README.md mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
+
+### All Files
+### for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\.mvn\\ \\api\\ \\target\\ \\public\\ \\uploads\\ \\templates\\ \\.git\\ \\.gitignore README.md mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
+
+### All Important file 
+for /f "delims=" %f in ('dir /s /b ^| findstr /v /i "\\.github\\ \\.mvn\\ \\api\\ \\target\\ \\terraform\\ \\public\\ \\uploads\\ \\templates\\ \\.git\\ \\.gitignore Dockerfile readme.md mvnw mvnw.cmd"') do @echo Processing: %f & (echo ===== %f ===== & type "%f" & echo.)>>"../all_code.txt"
+
 
 ### for /f "delims=" %f in ('dir /s /b AuthController.java AuthService.java LoginRequest.java LoginResponse.java pom.xml') do @echo ===== %f ===== >> "../all_code.txt" & type "%f" >> "../all_code.txt" & echo. >> "../all_code.txt"
 
