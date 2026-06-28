@@ -27,17 +27,17 @@ public class OpenApiConfig {
                                 - Users
                                 - Products
                                 - Product Images
-                                """)
-                        .contact(new Contact()
-                                .name("Prasenjit")
-                                .email("prasenjit@example.com"))
-                        .license(new License()
-                                .name("Apache 2.0")
-                                .url("https://www.apache.org/licenses/LICENSE-2.0")))
+                                """))
+                        // .contact(new Contact()
+                        //         .name("Prasenjit")
+                        //         .email("prasenjit@example.com"))
+                        // .license(new License()
+                        //         .name("Apache 2.0")
+                        //         .url("https://www.apache.org/licenses/LICENSE-2.0")))
 
-                .externalDocs(new ExternalDocumentation()
-                        .description("Project Documentation")
-                        .url("https://github.com/prasenjit1011/SpringBoot"))
+                // .externalDocs(new ExternalDocumentation()
+                //         .description("Project Documentation")
+                //         .url("https://github.com/prasenjit1011/SpringBoot"))
 
                 // Order of tags in Swagger UI
                 .tags(List.of(
@@ -45,6 +45,9 @@ public class OpenApiConfig {
                                 .name("Hello")
                                 .description("Health check APIs"),
 
+                        new Tag()
+                                .name("Auth")
+                                .description("Auth APIs"),                                
                         new Tag()
                                 .name("User")
                                 .description("User management APIs"),
