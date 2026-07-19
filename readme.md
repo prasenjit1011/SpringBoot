@@ -6,6 +6,9 @@ mvn -version
 mvn clean install
 mvn clean spring-boot:run
 
+http://localhost:8080/login
+http://localhost:8080/swagger-ui/index.html
+
 # Collect DB Credentials From (GitHub Login / prasenjit.aluni@gmail.com): 
 ### https://console.neon.tech/app/projects/bold-lab-35054172?database=nestcrud
 DATABASE_URL=jdbc:postgresql://ep-withered-frost-a5etb539-pooler.us-east-2.aws.neon.tech/nestcrud?sslmode=require
