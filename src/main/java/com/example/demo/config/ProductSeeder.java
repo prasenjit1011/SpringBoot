@@ -5,10 +5,12 @@ import com.example.demo.entity.User;
 import com.example.demo.repository.ProductRepository;
 import com.example.demo.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 @Component
+@Order(2)
 public class ProductSeeder implements CommandLineRunner {
 
     private final ProductRepository productRepository;
@@ -25,6 +27,7 @@ public class ProductSeeder implements CommandLineRunner {
 
         // Prevent duplicate seed data
         if (productRepository.count() > 0) {
+            System.out.println("Products already exist. Skipping product seeding.");
             return;
         }
 
