@@ -1,0 +1,8 @@
+CREATE TABLE foods (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    price DOUBLE PRECISION
+);
+
+INSERT INTO foods(name,price) VALUES('DUMMMY Food', 453);
+INSERT INTO foods(name,price) VALUES('NEW DUMMMY Food', 123);

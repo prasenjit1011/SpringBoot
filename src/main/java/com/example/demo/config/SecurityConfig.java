@@ -63,6 +63,7 @@ public class SecurityConfig {
                         // Product APIs
                         .requestMatchers(HttpMethod.GET,
                                 "/api/products",
+                                "/api/myfoods",
                                 "/api/products/user/*")
                         .permitAll()
 
